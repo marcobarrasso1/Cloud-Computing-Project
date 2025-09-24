@@ -14,6 +14,7 @@ After bringing them up with Docker Compose, open Grafana at http://localhost:300
 
 I found a pretty nice dashboard on the Grafana official web site and I decided to import that one. You can find it in the grafana_dashboard.json file in the Git Hub repository. When the dashboard is connected you can see various metrics, this is how the one I imported looks:
 
+<img src="images/dashboard.png" alt="Description" width="850"/>
 
 
 
