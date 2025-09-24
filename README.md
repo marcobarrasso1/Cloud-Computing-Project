@@ -49,9 +49,9 @@ To check the performances we can use the Locust web UI from `http://localhost:80
 
 I include two charts from runs on my MacBook Air M1, spawning 10 and 30 concurrent users, respectively. For each task we record request latency and requests per second.
 
+<img src="images/locust_10_users.png" width="500"/> <img src="images/locust_30_users.png" width="500"/>
 
-<img src="images/locust_10_users.png" alt="Description" width="500"/>
-<img src="images/locust_30_users.png" alt="Description" width="500"/>
+
 
 
 
