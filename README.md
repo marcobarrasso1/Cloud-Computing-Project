@@ -12,9 +12,10 @@ docker-compose up -d
 To monitor performance, we run three extra containers: Grafana (a visualization tool), Prometheus (which acts as Grafana’s data source), and Nextcloud Exporter (which works as a bridge between Nextcloud and Prometheus).
 After bringing them up with Docker Compose, open Grafana at `http://localhost:3000`, log in, and add a Prometheus data source. Set the Prometheus server to `http://localhost:9090` and make sure everything is up.Once the data source is saved and healthy, create your dashboard in the Grafana UI or import an existing `.json` dashboard file.
 
-I found a pretty nice dashboard on the Grafana official web site and I decided to import that one. You can find it in the grafana_dashboard.json file in the Git Hub repository. When the dashboard is connected you can see various metrics, this is how the one I imported looks:
+I found a pretty nice dashboard on the Grafana official web site and I decided to import that one. When the dashboard is connected you can see various metrics, this is how the one I imported looks:
 
 <img src="images/dashboard.png" alt="Description" width="850"/>
+
 
 
 
