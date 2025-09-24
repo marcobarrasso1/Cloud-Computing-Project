@@ -1,0 +1,125 @@
+version: "3.9"
+
+services:
+  # =========================
+  # Data layer
+  # =========================
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: "S3cure-Nextcloud-DB-Pass_!234"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nextcloud -d nextcloud"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--requirepass", "S3cure-Redis-Pass_!234"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "S3cure-Redis-Pass_!234", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  # =========================
+  # App under test
+  # =========================
+  nextcloud:
+    image: nextcloud:latest
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      # --- bootstrap admin (change these if you keep the stack) ---
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: "S3cure-Admin-Pass_!234"
+      NEXTCLOUD_TRUSTED_DOMAINS: "localhost"
+
+      # --- PostgreSQL connection ---
+      POSTGRES_HOST: db
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: "S3cure-Nextcloud-DB-Pass_!234"
+
+      # --- Redis for caching & file locking ---
+      REDIS_HOST: redis
+      REDIS_HOST_PASSWORD: "S3cure-Redis-Pass_!234"
+    volumes:
+      # Persist the whole app dir
+      - nextcloud_html:/var/www/html
+      # Explicitly persist the data subdir as a separate volume (nice for backups)
+      - nextcloud_data:/var/www/html/data
+    restart: unless-stopped
+
+  # =========================
+  # Monitoring
+  # =========================
+  nextcloud-exporter:
+    image: ghcr.io/xperimental/nextcloud-exporter:latest
+    depends_on:
+      nextcloud:
+        condition: service_started
+    environment:
+      NEXTCLOUD_SERVER: http://nextcloud
+      NEXTCLOUD_USERNAME: admin
+      NEXTCLOUD_PASSWORD: "S3cure-Admin-Pass_!234"
+      NEXTCLOUD_LISTEN_ADDRESS: :9205
+    ports:
+      - "9205:9205"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+    volumes:
+      - ./prometheus:/etc/prometheus:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "S3cure-Grafana-Pass_!234"
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+  # =========================
+  # Load generator
+  # =========================
+  locust:
+    image: locustio/locust:latest
+    volumes:
+      - ./locust-tasks:/locust-tasks
+      - ./test-data:/test-data
+      - ./results:/results
+    command: >
+      -f /locust-tasks/tasks.py
+      --web-host 0.0.0.0
+      --web-port 8089
+    ports:
+      - "8089:8089"   # or "8090:8090" if you set --web-port 8090
+    depends_on:
+      - nextcloud
+
+volumes:
+  db_data:
+  nextcloud_html:
+  nextcloud_data:
+  grafana_data:
+
