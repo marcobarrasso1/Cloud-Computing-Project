@@ -1,7 +1,7 @@
 # Cloud-Based File Storage System
 
 ## Deployment
-We deploy the system with Docker and Docker Compose. Using Compose, we define the multi-container stack and connect Locust, Grafana, and Prometheus to Nextcloud. By editing docker-compose.yml, you can swap the database backend and modify Nextcloud settings.
+We deploy the system with Docker and Docker Compose. Using Compose, we define the multi-container stack and connect Locust, Grafana, and Prometheus to Nextcloud. By editing `docker-compose.yml`, you can swap the database backend and modify Nextcloud settings.
 
 To run the docker containers just go to the directory that contains the `docker-compose.yml` file and run the following command:
 ```
@@ -15,6 +15,7 @@ After bringing them up with Docker Compose, open Grafana at `http://localhost:30
 I found a pretty nice dashboard on the Grafana official web site and I decided to import that one. You can find it in the grafana_dashboard.json file in the Git Hub repository. When the dashboard is connected you can see various metrics, this is how the one I imported looks:
 
 <img src="images/dashboard.png" alt="Description" width="850"/>
+
 
 
 
