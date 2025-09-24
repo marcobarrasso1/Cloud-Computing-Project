@@ -1,7 +1,12 @@
-## Cloud-Based File Storage System
+# Cloud-Based File Storage System
 
-# Deployment
+## Deployment
 We deploy the system with Docker and Docker Compose. Using Compose, we define the multi-container stack and connect Locust, Grafana, and Prometheus to Nextcloud. By editing docker-compose.yml, you can swap the database backend and modify Nextcloud settings.
+
+```
+docker-compose up -d
+```
+
 
 
 
