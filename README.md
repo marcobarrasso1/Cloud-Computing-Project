@@ -17,8 +17,15 @@ I found a pretty nice dashboard on the Grafana official web site and I decided t
 <img src="images/dashboard.png" alt="Description" width="850"/>
 
 
+## Perfomance Evaluation
+
+To assess the performance of the file storage system, we created files of different sizes using the `dd` command. We then uploaded these files to, and downloaded them from, the system while measuring the time to complete each operation. The script used for these tests is provided in `upload\_and\_download.sh`.
+
+The following plots report the elapsed time for download and upload as a function of the file size. 
 
 
+
+<img src="images/size_vs_time_curl.png" alt="Description" width="850"/>
 
 
 
