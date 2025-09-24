@@ -8,6 +8,12 @@ To run the docker containers just go to the directory that contains the docker-c
 docker-compose up -d
 ```
 
+## Monitoring with Grafana
+To monitor performance, we run three extra containers: Grafana (a visualization tool), Prometheus (which acts as Grafana’s data source), and Nextcloud Exporter (which works as a bridge between Nextcloud and Prometheus).
+After bringing them up with Docker Compose, open Grafana at \texttt{http://localhost:3000}, log in, and add a Prometheus data source. Set the Prometheus server to \texttt{http://localhost:9090} and make sure everything is up.Once the data source is saved and healthy, create your dashboard in the Grafana UI or import an existing \texttt{.json} dashboard file.
+
+I found a pretty nice dashboard on the Grafana official web site and I decided to import that one. You can find it in the \texttt{grafana\_dashboard.json} file in the Git Hub repository. When the dashboard is connected you can see various metrics, this is how the one I imported looks:
+
 
 
 
