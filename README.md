@@ -25,7 +25,8 @@ The following plots report the elapsed time for download and upload as a functio
 
 
 
-<img src="images/size_vs_time_curl.png" alt="Description" width="600"/>
+<img src="images/size_vs_time_curl.png" alt="Description" width="500"/>
+
 
 
 
