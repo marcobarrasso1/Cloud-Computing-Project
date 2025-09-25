@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SERVICE="${SERVICE:-nextcloud}"      # change if your service name differs
+SERVICE="${SERVICE:-nextcloud}"    
 COUNT="${COUNT:-30}"
 PREFIX="${PREFIX:-locust_user}"
 PASS="${PASS:-test_password1234!}"
