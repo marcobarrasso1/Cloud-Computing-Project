@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# --- CONFIG ---
 USER="locust_user0"                  
 PASS='test_password1234!'            
 BASE_URL="http://localhost:8080"
@@ -11,7 +10,6 @@ TEST_DIR="sizebench"
 OUT="size_times.csv"
 DATA_DIR="test_files"
 
-# Ordered labels and their sizes in BYTES (parallel arrays)
 labels=( "1KB"  "512KB"   "2MB"     "8MB"      "32MB"       "128MB" )
 bytes=(  1024   524288    2097152   8388608    33554432     134217728 )
 
@@ -25,13 +23,12 @@ for i in "${!labels[@]}"; do
 done
 
 echo "Preparing remote dir: ${DAV_BASE}/${TEST_DIR}"
-# Create once; ignore error if it already exists
+
 curl --silent --show-error -u "${USER}:${PASS}" -X MKCOL "${DAV_BASE}/${TEST_DIR}" -o /dev/null || true
 
 # CSV header
 echo "size_label,size_bytes,op,time_s,code" > "$OUT"
 
-# One upload + one download per size
 for i in "${!labels[@]}"; do
   label="${labels[$i]}"
   sz="${bytes[$i]}"
